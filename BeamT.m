@@ -16,7 +16,6 @@ else %I'm guessing that in the spring and fall the values are in the middle
     r1 = 1;
     rk = 1.01;
 end
-
 aoo = .4237 - .008216*(6-A)^2;
 a1o = .5055 + .00595*(6.5-A)^2;
 ko = .2711 + .001858*(2.5-A)^2;
