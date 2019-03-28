@@ -1,3 +1,3 @@
-function value = Icd(DiffuseT,Io,SolarAltitude,Tilt)
+function value = Icd(DiffuseT,Io,Incident,Tilt)
 
-value = DiffuseT*Io*cosd(90-SolarAltitude)*(1+cosd(Tilt))/2;
+value = DiffuseT*Io*cosd(Incident)*(1+cosd(Tilt))/2;

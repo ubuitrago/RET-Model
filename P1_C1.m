@@ -1,5 +1,6 @@
 % Graphs the Irradiance for Austin and total system
-% power delivery vs. time of day. 
+% power delivery vs. time of day.
+% Austin Irradiance vs. time of day.
 % OCI=0
 % Day is December 21
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -7,11 +8,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear variables;
 N = 355;
-TOD = [0.00:0.25:24.00]; % check that this is correct
+long_std = 90; %standard longitude 
+long_loc = 97.753; %local longitude
+TOD = [0.00:0.25:24.00]; % Decimal Hours 
 ST = [zeros([1 length(TOD)])]; % pre-filled for execution speed 
-et = ET(N);
+et = ET(N); % equation of time
+
 for i=1:length(TOD)
-    ST(i) = solar_time(TOD(i),90,97.753,et);
+    ST(i) = solar_time(TOD(i),long_std,long_loc,et);
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -20,6 +24,8 @@ end
 
 lat = 30.260;
 dec = Declination(N);
+beta = 0;
+panelAz = 46;
 Alpha = [zeros([1 length(TOD)])]; %solar altitude 
 hrAng = [zeros([1 length(TOD)])]; %hour angle 
 solAz = [zeros([1 length(TOD)])]; %solar azimuthal
@@ -28,7 +34,7 @@ for i=1:length(TOD)
     hrAng(i) = w(ST(i));
     Alpha(i) = SolarAltitude(lat,dec,hrAng(i));
     solAz(i) = SolarAzimuth(Alpha(i),dec,hrAng(i));
-    anglInc(i) = Incident(Alpha(i),22,solAz(i),46);
+    anglInc(i) = Incident(Alpha(i),beta,solAz(i),panelAz);
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -42,17 +48,38 @@ diffuseTrans = DiffuseT(beamTrans); % Diffuse radiation transmisivity
 
 %irradiation calculation 
 for i=1:length(anglInc)
+    
     irrB(i) = Icb(Inso,beamTrans(i),anglInc(i)) ; % clear day beam irradation 
-    irrD(i) = Icd(diffuseTrans(i),Inso,Alpha(i),22); % clear day diffuse irradation
+    % checking tilt of panel
+    if beta ~= 0
+        irrD(i) = Icd(diffuseTrans(i),Inso,anglInc(i),beta); % clear day diffuse irradation, panel tilt
+    else
+        irrD(i) = Icd(diffuseTrans(i),Inso,90-Alpha(i),beta); % horizontal surface
+    end
+    
     totIr(i) = Icbd(irrB(i),irrD(i));
+    
 end 
+
 %Power calculation 
+eff = 0.157;    % rated module efficiency 
+panelTemp = 25; % degrees celsius 
+len = 1.640; % meters
+width = 0.99;   % meters
+numPanels = 960;
+Ptot = [zeros([1 length(totIr)])];
+
 for i=1:length(totIr)
-    Ptot(i) = Power(totIr(i),0.182,25,1.640,0.99,960); % assumed a temp of 25 C, check with Andrew to mk sure was used correctly
+    
+    Ptot(i) = Power(totIr(i),eff,panelTemp,len,width,numPanels); 
     Ptot(i) = Ptot(i)/1e6;
 end 
 
+%%%%%%%%%%%
+% Grahping 
+%%%%%%%%%%%
 figure
+grid on
 title("Irradiance for Austin and system power delivery vs. Time of day");
 hold on;
 xlabel("Time of Day (decimal hours)");
@@ -65,7 +92,3 @@ ylabel('Irradiance for Austin (W/m^2)');
 legend('Power','Irradiance')
 set(legend,'Location','NorthWest','FontSize',13);
 hold off
-
-
-
-
