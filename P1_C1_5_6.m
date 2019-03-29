@@ -1,6 +1,6 @@
 % Case 1 graph 5
 % Angle of Incidence at noon vs. Day of the Year starting Jan 1.
-%global TOD;
+global TOD;
 A = 0.149; % alt. of Austin in Km
 N = [1:1:365]; % day of year
 lat = 30.260;  % latitude of austin
@@ -29,20 +29,15 @@ end
 % Case 1 graph 6
 % Trapezoidal Integration of total power production per day for a year
 %%%%%%%%%%%%%%%%%%%%
-H = .25; %step size, 15 minutes
+H = 0.25; %step size, 15 minutes
 integration = [zeros([1 length(N)])];
 for i=1:length(N)
     
     n = N(i);
     pwr = P1_C1(n); % P1_C1 is daily power production
     daily = 0;
-    
-    for i = 1:length(pwr)-1
-        step = (H/2*(pwr(i)+ pwr(i+1)));
-        daily = daily + step;
-    end
-    
-    integration(i) = daily;
+    integration(i)= trapz(TOD,pwr);
+
 end
 
 %plotting graph 5
@@ -61,6 +56,6 @@ grid on;
 plot(N,integration);
 title('Total Daily energy production vs. Day of the year');
 xlabel('Day of the Year');
-ylabel('Energy Production (Mw)');
+ylabel('Energy Production (Mwh)');
 grid off;
 

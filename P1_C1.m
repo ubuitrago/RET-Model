@@ -4,15 +4,14 @@ function PTOT = P1_C1(N)
 % power delivery vs. time of day.
 % Austin Irradiance vs. time of day.
 % OCI=0
-% Day is December 21
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Calculating Solar Time array
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %clear variables;
-%N = 172;
+global TOD;
+global totIr;
 long_std = 90; %standard longitude 
 long_loc = 97.753; %local longitude
-global TOD;
 TOD = [0.00:0.25:24.00]; % Decimal Hours 
 ST = [zeros([1 length(TOD)])]; % pre-filled for execution speed 
 et = ET(N); % equation of time
@@ -24,7 +23,6 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%
 % Solar Geometrictators 
 %%%%%%%%%%%%%%%%%%%%%%%
-
 lat = 30.260;
 dec = Declination(N);
 beta = 0;
@@ -50,7 +48,7 @@ alt = 0.149; %Altitude of Austin in Km
 beamTrans = BeamT(alt,N,Alpha); % beam radiation transmisivity  
 diffuseTrans = DiffuseT(beamTrans); % Diffuse radiation transmisivity
 irrD = [zeros([1 length(anglInc)])];
-%irradiation calculation 
+%irradiation calculation
 for i=1:length(anglInc)
     global irrB;    % globalizing irradation for accessibility 
     global irrD;
@@ -85,23 +83,4 @@ for i=1:length(totIr)
     Ptot(i) = Ptot(i)/1e6;
 end 
  PTOT = Ptot;
-%%%%%%%%%%%
-% Grahping 
-%%%%%%%%%%%
-% figure
-% grid on
-% title("Irradiance for Austin and system power delivery vs. Time of day");
-% hold on;
-% xlabel("Time of Day (decimal hours)");
-% yyaxis left
-% plot(TOD,Ptot,'-b');
-% ylabel("Total Power Delivery (Mw)");
-% yyaxis right
-% plot(TOD,totIr,'r--');
-% ylabel('Irradiance for Austin (W/m^2)');
-% legend('Power','Irradiance')
-% set(legend,'Location','NorthWest','FontSize',13);
-% hold off
-%%%%%%%%%%%%%%%%%%%
-%return power
 
