@@ -14,7 +14,7 @@ power = Power(icbd,Efficiency,T,Length,width,n);
 
 for i = 1:length(power)
     if solaraltitude(i) > 0 && solaraltitude(i+1) > 0
-        step = (H/2*(power(i)+power(i+1)));
+        step = (H/2*(power(i)+ power(i+1)));
         daily = daily + step;
     end
 end

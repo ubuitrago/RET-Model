@@ -1,3 +1,5 @@
+function PTOT = P1_C1(N)
+% function outputs total power for a given day
 % Graphs the Irradiance for Austin and total system
 % power delivery vs. time of day.
 % Austin Irradiance vs. time of day.
@@ -6,10 +8,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Calculating Solar Time array
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-clear variables;
-N = 355;
+%clear variables;
+%N = 172;
 long_std = 90; %standard longitude 
 long_loc = 97.753; %local longitude
+global TOD;
 TOD = [0.00:0.25:24.00]; % Decimal Hours 
 ST = [zeros([1 length(TOD)])]; % pre-filled for execution speed 
 et = ET(N); % equation of time
@@ -25,7 +28,7 @@ end
 lat = 30.260;
 dec = Declination(N);
 beta = 0;
-panelAz = 46;
+panelAz = 0;
 Alpha = [zeros([1 length(TOD)])]; %solar altitude 
 hrAng = [zeros([1 length(TOD)])]; %hour angle 
 solAz = [zeros([1 length(TOD)])]; %solar azimuthal
@@ -43,19 +46,27 @@ end
 
 Inso = Io(N);
 alt = 0.149; %Altitude of Austin in Km
+%Globalizing beam and diffuse transmissivity for accessibility 
 beamTrans = BeamT(alt,N,Alpha); % beam radiation transmisivity  
 diffuseTrans = DiffuseT(beamTrans); % Diffuse radiation transmisivity
-
+irrD = [zeros([1 length(anglInc)])];
 %irradiation calculation 
 for i=1:length(anglInc)
-    
+    global irrB;    % globalizing irradation for accessibility 
+    global irrD;
     irrB(i) = Icb(Inso,beamTrans(i),anglInc(i)) ; % clear day beam irradation 
     % checking tilt of panel
     if beta ~= 0
         irrD(i) = Icd(diffuseTrans(i),Inso,anglInc(i),beta); % clear day diffuse irradation, panel tilt
-    else
-        irrD(i) = Icd(diffuseTrans(i),Inso,90-Alpha(i),beta); % horizontal surface
+    elseif beta == 0
+        zenith = 90-Alpha(i);
+        irrD(i) = Icd(diffuseTrans(i),Inso,zenith,beta); % horizontal surface
     end
+    % Cannot model diffuse radiation at sunrise when
+    % angles are small, so setting diffuse Irradiation equal to zero if its negative. 
+    if irrD(i) < 0
+        irrD(i) = 0;
+    end 
     
     totIr(i) = Icbd(irrB(i),irrD(i));
     
@@ -64,31 +75,33 @@ end
 %Power calculation 
 eff = 0.157;    % rated module efficiency 
 panelTemp = 25; % degrees celsius 
-len = 1.640; % meters
+len = 1.640; %length meters
 width = 0.99;   % meters
 numPanels = 960;
 Ptot = [zeros([1 length(totIr)])];
 
 for i=1:length(totIr)
-    
     Ptot(i) = Power(totIr(i),eff,panelTemp,len,width,numPanels); 
     Ptot(i) = Ptot(i)/1e6;
 end 
-
+ PTOT = Ptot;
 %%%%%%%%%%%
 % Grahping 
 %%%%%%%%%%%
-figure
-grid on
-title("Irradiance for Austin and system power delivery vs. Time of day");
-hold on;
-xlabel("Time of Day (decimal hours)");
-yyaxis left
-plot(TOD,Ptot,'-b');
-ylabel("Total Power Delivery (Mw)");
-yyaxis right
-plot(TOD,totIr,'r--');
-ylabel('Irradiance for Austin (W/m^2)');
-legend('Power','Irradiance')
-set(legend,'Location','NorthWest','FontSize',13);
-hold off
+% figure
+% grid on
+% title("Irradiance for Austin and system power delivery vs. Time of day");
+% hold on;
+% xlabel("Time of Day (decimal hours)");
+% yyaxis left
+% plot(TOD,Ptot,'-b');
+% ylabel("Total Power Delivery (Mw)");
+% yyaxis right
+% plot(TOD,totIr,'r--');
+% ylabel('Irradiance for Austin (W/m^2)');
+% legend('Power','Irradiance')
+% set(legend,'Location','NorthWest','FontSize',13);
+% hold off
+%%%%%%%%%%%%%%%%%%%
+%return power
+
