@@ -3,8 +3,8 @@ global TOD;
 global totIr;
 Ptot = P1_C1(N);
 %%%%%%%%%%%
-%Grahping for both
-%case1_graph1 & graph2 
+%Grahping for three
+%case1_graphs 1,2,&3
 %%%%%%%%%%%
 figure
 grid on

@@ -1,18 +1,19 @@
 function PTOT = P1_C1(N)
-% function outputs total power for a given day
-% Graphs the Irradiance for Austin and total system
+% function outputs total power for a given day.
+% It graphs the Irradiance for Austin and total system
 % power delivery vs. time of day.
-% Austin Irradiance vs. time of day.
 % OCI=0
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Calculating Solar Time array
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%clear variables;
+% globalizing variables for accessibility 
 global TOD;
 global totIr;
+global irrB;    
+global irrD;
 long_std = 90; %standard longitude 
 long_loc = 97.753; %local longitude
-TOD = [0.00:0.25:24.00]; % Decimal Hours 
+TOD = [0.00:5/60:24.00]; % Decimal Hours 
 ST = [zeros([1 length(TOD)])]; % pre-filled for execution speed 
 et = ET(N); % equation of time
 
@@ -23,10 +24,10 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%
 % Solar Geometrictators 
 %%%%%%%%%%%%%%%%%%%%%%%
-lat = 30.260;
-dec = Declination(N);
-beta = 0;
-panelAz = 0;
+lat = 30.260; % Austin latitude 
+dec = Declination(N); % angle in degrees 
+beta = 22; % panel tilt in degrees
+panelAz = 46; % angle in degrees
 Alpha = [zeros([1 length(TOD)])]; %solar altitude 
 hrAng = [zeros([1 length(TOD)])]; %hour angle 
 solAz = [zeros([1 length(TOD)])]; %solar azimuthal
@@ -50,8 +51,8 @@ diffuseTrans = DiffuseT(beamTrans); % Diffuse radiation transmisivity
 irrD = [zeros([1 length(anglInc)])];
 %irradiation calculation
 for i=1:length(anglInc)
-    global irrB;    % globalizing irradation for accessibility 
-    global irrD;
+%     global irrB;    % globalizing irradation for accessibility 
+%     global irrD;
     irrB(i) = Icb(Inso,beamTrans(i),anglInc(i)) ; % clear day beam irradation 
     % checking tilt of panel
     if beta ~= 0
@@ -75,7 +76,7 @@ eff = 0.157;    % rated module efficiency
 panelTemp = 25; % degrees celsius 
 len = 1.640; %length meters
 width = 0.99;   % meters
-numPanels = 960;
+numPanels = 960; % number of panels 
 Ptot = [zeros([1 length(totIr)])];
 
 for i=1:length(totIr)
