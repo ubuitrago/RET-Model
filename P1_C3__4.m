@@ -1,8 +1,9 @@
 clear all
+global TOD;
 integralP=zeros(1,365);
 for N=1:365
     Ptot = P1_C1(N);
-    integralP(N)=sum(Ptot);
+    integralP(N)=trapz(TOD,Ptot);
 end
 plot(integralP)
 xlim([0 365]);
