@@ -1,4 +1,4 @@
-function PTOT = P1_C1(N)
+function PTOT = P1_C1(N,panelAz)
 % function outputs total power for a given day.
 % It graphs the Irradiance for Austin and total system
 % power delivery vs. time of day.
@@ -27,7 +27,6 @@ end
 lat = 30.260; % Austin latitude 
 dec = Declination(N); % angle in degrees 
 beta = 22; % panel tilt in degrees
-panelAz = 0; % angle in degrees
 Alpha = [zeros([1 length(TOD)])]; %solar altitude 
 hrAng = [zeros([1 length(TOD)])]; %hour angle 
 solAz = [zeros([1 length(TOD)])]; %solar azimuthal
