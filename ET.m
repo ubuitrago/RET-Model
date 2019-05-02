@@ -15,6 +15,6 @@ value = a1*sind(t) + b1*cosd(t) + a2*sind(2*t) + b2*cosd(2*t) + a3*sind(3*t)+ b3
 minutes = fix(value);
 decimal_seconds = value-minutes;
 seconds = round(decimal_seconds*60*-1);
-clock_time = minutes+":"+seconds;
+clock_time = minutes+":"+seconds; %done
 
 
