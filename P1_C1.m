@@ -9,7 +9,7 @@ function PTOT = P1_C1(N)
 % globalizing variables for accessibility 
 global TOD;
 global totIr;
-global irrB;    
+global irrB; 
 global irrD;
 long_std = 90; %standard longitude 
 long_loc = 97.753; %local longitude
@@ -27,7 +27,7 @@ end
 lat = 30.260; % Austin latitude 
 dec = Declination(N); % angle in degrees 
 beta = 22; % panel tilt in degrees
-panelAz = 46; % angle in degrees
+panelAz = 0; % angle in degrees
 Alpha = [zeros([1 length(TOD)])]; %solar altitude 
 hrAng = [zeros([1 length(TOD)])]; %hour angle 
 solAz = [zeros([1 length(TOD)])]; %solar azimuthal
