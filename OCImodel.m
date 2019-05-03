@@ -17,13 +17,13 @@ Pmax = [Jan_maxgen Feb_maxgen Mar_maxgen Apr_maxgen May_maxgen Jun_maxgen...
     Jul_maxgen Aug_maxgen Sep_maxgen Oct_maxgen Nov_maxgen Dec_maxgen];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 num_days = [31 28 31 30 31 30 31 31 30 31 30 31];
-forward = flip(noon_gen); %flipping data to start from 1/1/18  
+noon_gen = flip(noon_gen); %flipping data to start from 1/1/18  
 % OCI for each Day Of Month
 DOM = 1;
 for i=1:12
     month_end = num_days(i);
     for j=1:month_end
-        Pday(i,j)= forward(DOM,1);
+        Pday(i,j)= noon_gen(DOM,1);
         DOM=DOM+1;
     end
 end
@@ -32,7 +32,16 @@ end
 for i=1:12
     month_end = num_days(i);
     for j=1:month_end
-        OCI(i,j) = 10 -((Pday(i,j)-(0.05*Pmax(i)))/(Pmax(i)-(0.05*Pmax(i)))*10);
+        %NEW
+        %condition given in class
+        if Pday(i,j) < (0.05*Pmax(i))
+            OCI(i,j) = 10;
+        
+        else
+            OCI(i,j) = 10 -((Pday(i,j)-(0.05*Pmax(i)))/(Pmax(i)-(0.05*Pmax(i)))*10);
+  
+        end
+        %NEW
     end
 end
 % Indexing OCI with day of the year

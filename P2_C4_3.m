@@ -2,6 +2,9 @@
 clear all
 global TOD;
 load('DailyOCI.mat'); %loads index_OCI matrix
+% loads actual generation data -> noon_gen
+actual_data = readtable('daily_noon.csv'); 
+actual_gen = actual_data{:,3}; 
 num_days = [31 28 31 30 31 30 31 31 30 31 30 31];
 DOY = [1:1:365];
 integralP = zeros(1,365);
@@ -16,4 +19,5 @@ xlim([0 365]);
 ylabel('Power Produced (MWh)')
 xlabel('Day of year')
 title('Total Daily Energy Production vs Day of the Year with OCI model')
+
     
