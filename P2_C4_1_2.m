@@ -10,7 +10,7 @@ power = P2_C4(DOY,OCI);
 % Plotting graph 1 %%%%%%
 figure
 grid on
-title("Irradiance and Power Delivery vs. Time of Day, cloudy day");
+title("Irradiance and Power Delivery vs. Time of Day, OCI=10");
 xlabel("Time of Day (Decimal Hours)");
 yyaxis left
 plot(TOD,power,'-b');

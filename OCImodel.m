@@ -35,4 +35,12 @@ for i=1:12
         OCI(i,j) = 10 -((Pday(i,j)-(0.05*Pmax(i)))/(Pmax(i)-(0.05*Pmax(i)))*10);
     end
 end
-
+% Indexing OCI with day of the year
+index_OCI = zeros(1,365);
+counter = 1;
+for m=1:12 
+    for d=1:num_days(m)
+        index_OCI(1,counter) = OCI(m,d);
+        counter = counter+1;
+    end
+end
