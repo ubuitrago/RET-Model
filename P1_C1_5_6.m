@@ -34,7 +34,7 @@ end
 integration = [zeros([1 length(N)])];
 for i=1:length(N)
     n = N(i);
-    pwr = P1_C1(n); % P1_C1 is daily power production
+    pwr = P1_C1(n,46); % P1_C1 is daily power production
     integration(i)= trapz(TOD,pwr);
 end
 
@@ -43,7 +43,7 @@ end
 figure;
 plot(N,thetaI);
 grid on;
-title('Angle of Incidence at noon vs. Day of the year');
+title('Angle of Incidence at Noon vs. Day of the Year');
 xlabel('Day of the Year');
 ylabel('Angle of Incidence (deg)');
 %%%%%%%%%%%%%%%
@@ -53,8 +53,9 @@ ylabel('Angle of Incidence (deg)');
 figure;
 plot(N,integration);
 grid on;
-title('Total Daily energy production vs. Day of the year');
+title('Total Daily Energy Production vs. Day of the Year');
 xlabel('Day of the Year');
-ylabel('Energy Production (Mwh)');
+xlim([0 365])
+ylabel('Energy Production (MWh)');
 
 

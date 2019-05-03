@@ -13,7 +13,7 @@ end
 figure
 plot(TOD,ratio,'-b');
 grid on;
-title("Ratio of Beam to Diffuse Irradiance for Austin vs. Time of day");
+title("Ratio of Beam to Diffuse Irradiance for Austin vs. Time of Day");
 xlabel("Time of Day (decimal hours)");
 ylabel("Ratio of Beam to Diffuse");
 %grid off;

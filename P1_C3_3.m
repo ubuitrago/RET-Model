@@ -38,7 +38,7 @@ figure
 plot(TOD,Tiltbest)
 xlim([0 24]);
 ylim([-100 100]);
-xlabel('Time of day (Decimal hours)')
-title('Optimal Tilt angle vs Time of Day')
+xlabel('Time of Day (Decimal hours)')
+title('Optimal Tilt Angle vs Time of Day, June 21st')
 ylabel('Angle (Degrees)')
 grid on
