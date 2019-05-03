@@ -1,7 +1,5 @@
 %%%%%%%%%%%%%%%%
-% Case 1 graph 5
-% Angle of Incidence 
-% at noon vs. Day of the Year starting Jan 1
+% Case 2 graph 3
 %%%%%%%%%%%%%%%%
 global TOD;
 A = 0.149; % alt. of Austin in Km
@@ -26,34 +24,48 @@ for i=1:length(N)
 end
 
 %%%%%%%%%%%%%%%%%%%%
-% Case 1 graph 6
+% Case 2 graph 3
 % Trapezoidal Integration 
 % of total power production 
 % per day for a year
+% repeted at different temps
 %%%%%%%%%%%%%%%%%%%%
 integration = [zeros([1 length(N)])];
 for i=1:length(N)
     n = N(i);
-    pwr = P1_C1(n,46); % P1_C1 is daily power production
+    pwr = P1_C2(n,0); % P1_C1 is daily power production
     integration(i)= trapz(TOD,pwr);
 end
 
-%%%%%%%%%%%%%%%%%
-%plotting graph 5
-figure;
-plot(N,thetaI);
-grid on;
-title('Angle of Incidence at Noon vs. Day of the Year');
-xlabel('Day of the Year');
-ylabel('Angle of Incidence (deg)');
 %%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%
-%plotting graph 6
+%plotting graph 3
 figure;
-plot(N,integration);
+plot(N,integration,'-b');
+hold on
+integration = [zeros([1 length(N)])];
+for i=1:length(N)
+    n = N(i);
+    pwr = P1_C2(n,25); % P1_C1 is daily power production
+    integration(i)= trapz(TOD,pwr);
+end
+plot(N,integration,'-r');
+integration = [zeros([1 length(N)])];
+for i=1:length(N)
+    n = N(i);
+    pwr = P1_C2(n,45); % P1_C1 is daily power production
+    integration(i)= trapz(TOD,pwr);
+end
+plot(N,integration,'-g');
+integration = [zeros([1 length(N)])];
+for i=1:length(N)
+    n = N(i);
+    pwr = P1_C2(n,85); % P1_C1 is daily power production
+    integration(i)= trapz(TOD,pwr);
+end
+plot(N,integration,'-c');
 grid on;
 title('Total Daily Energy Production vs. Day of the Year');
+legend({'0C Panel Temperature','25C Panel Temperature','45C Panel Temperature','85C Panel Temperature'},'location','southoutside')
 xlabel('Day of the Year');
 xlim([0 365])
 ylabel('Energy Production (MWh)');
