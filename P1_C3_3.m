@@ -1,6 +1,6 @@
 clear all
 N = 172;
-Ptot = P1_C1(N);
+Ptot = P1_C1(N,46);
 %solar time array
 global TOD;
 long_std = 90; %standard longitude 
@@ -21,16 +21,24 @@ for i=1:length(TOD)
     hrAng(i) = w(ST(i));
     Alpha(i) = SolarAltitude(lat,dec,hrAng(i));
 end
-
-for x=1:size(Alpha,2)
-    if Alpha(x)<0
-        Alpha(x)=0;%angles shouldnt be negative
+%%%
+io = Io(N);
+Tiltrange = -90:1:90;
+for j = 1:length(TOD)
+    for i = 1:length(Tiltrange)
+        incident(i,j) = Incident(Alpha(j), Tiltrange(i), SolarAzimuth(Alpha(j),dec,hrAng(j)), 46);
     end
 end
-beta=90-Alpha;
-plot(ST,beta);
+
+[incidentbest, indexbest] = min(incident,[],1);
+
+    
+Tiltbest = indexbest-91;
+figure
+plot(TOD,Tiltbest)
 xlim([0 24]);
-ylim([0 100]);
+ylim([-100 100]);
 xlabel('Time of day (Decimal hours)')
-title('Tilt angle vs time of day')
+title('Optimal Tilt angle vs Time of Day')
 ylabel('Angle (Degrees)')
+grid on
