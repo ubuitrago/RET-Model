@@ -1,7 +1,7 @@
 % Daily energy production vs. DOY with cloud model
 clear all
 global TOD;
-load('DailyOCI.mat');
+load('DailyOCI.mat'); %loads index_OCI matrix
 num_days = [31 28 31 30 31 30 31 31 30 31 30 31];
 DOY = [1:1:365];
 integralP = zeros(1,365);
