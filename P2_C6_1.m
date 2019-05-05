@@ -1,11 +1,10 @@
 % 1X congfiguration
 % March 26,2019
-% case 5 %
 load('DailyOCI.mat');
 global totIr_OCI;
 global TOD;
 day = 85;
-P2_C6(day,index_OCI(day),25,46,960);
+P2_C6(day,index_OCI(day),25,46);
 % power generated
 for i=1:length(TOD)
     time = TOD(i);
@@ -14,7 +13,7 @@ for i=1:length(TOD)
 end
     
 for i=1:length(TOD)
-    val = P2_C6(day,index_OCI(day),panel_temp(i),46,960);
+    val = P2_C6(day,index_OCI(day),panel_temp(i),46);
     generated(1,i) = val(i);
 end
 % Idealized power consumption on a winter day
