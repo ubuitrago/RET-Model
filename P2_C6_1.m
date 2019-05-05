@@ -4,7 +4,7 @@ load('DailyOCI.mat');
 global totIr_OCI;
 global TOD;
 day = 85;
-P2_C6(day,index_OCI(day),25,46);
+P2_C6(day,0,25,46);
 % power generated
 for i=1:length(TOD)
     time = TOD(i);
@@ -13,7 +13,7 @@ for i=1:length(TOD)
 end
     
 for i=1:length(TOD)
-    val = P2_C6(day,index_OCI(day),panel_temp(i),46);
+    val = P2_C6(day,0,panel_temp(i),46);
     generated(1,i) = val(i);
 end
 % Idealized power consumption on a winter day
