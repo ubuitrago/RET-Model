@@ -1,4 +1,4 @@
-function PTOT = P2_C6(N,OCI,panelTemp,panelAz,numPanels=960)
+function PTOT = P2_C6(N,OCI,panelTemp,panelAz,numPanels)
 % function outputs total power for a given day.
 % It graphs the Irradiance for Austin and total system
 % power delivery vs. time of day.
