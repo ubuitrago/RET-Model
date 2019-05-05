@@ -5,7 +5,7 @@ N = 172;
 load("DailyOCI.mat");
 Ptot = P2_C6(N,index_OCI(N),25,46,960)/1000;
 Batteries = 0; %0,6, or 24
-cconsumption = 0; % cummulative consumption in kWh that had to be purchased from Austin Energy
+cconsumption = zeros(1,length(TOD)); % cummulative consumption in kWh that had to be purchased from Austin Energy
 iconsumption = zeros(1,length(TOD)); %instantaneous consumption kW
 storage = zeros(1,length(TOD)); %kWh
 esold = 0; %energy sold
@@ -47,7 +47,7 @@ for i = 1:length(TOD)
         if storage(i) >= iconsumption(i)*5/60 %if there is enough stored to meet full need
             storage(i) = storage(i-1) - iconsumption(i)*5/60; %demand is met by battery
         elseif iconsumption(i)*5/60 > storage %not enough battery storage
-            cconsumption = cconsumption + (iconsumption(i)*5/60-storage); %some energy is purchased
+            cconsumption(i) = (iconsumption(i)*5/60-storage(i))-Ptot(i); %some energy is purchased
             storage(i) = 0; %all storage is depleted to decrease purchased amount
         end
     end
