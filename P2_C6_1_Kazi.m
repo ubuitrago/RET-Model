@@ -124,7 +124,7 @@ xlabel('Time of Day');
 ylabel('Power (Kw)');
 plot(TOD,Ptot,'b-');
 plot(TOD,cconsumption,'r-');
-plot(TOD,stora  ge,'g-');
+plot(TOD,storage,'g-');
 plot(TOD,consum,'m-');
 plot(TOD,pec_prod,'k-');
 plot(TOD,pec_consumption,'k--');
