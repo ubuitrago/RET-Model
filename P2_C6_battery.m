@@ -49,7 +49,7 @@ for i = 1:length(TOD)
         elseif iconsumption(i)*5/60 > storage+Ptot(i)*5/60 %not enough battery storage
             cconsumption(i) = (iconsumption(i)*5/60-storage(i)); %some energy is purchased
             storage(i) = 0; %all storage is depleted to decrease purchased amount
-        elseif iconsumption(i)*5/60 <storage(i) + Ptot(i)
+        elseif iconsumption(i)*5/60 <storage(i) + Ptot(i)*5/60
             cconsumption(i) = 0;
             storage(i) = storage(i-1) + Ptot(i)*5/60 - iconsumption(i)*5/60;
         end
