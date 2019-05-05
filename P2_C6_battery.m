@@ -46,9 +46,12 @@ for i = 1:length(TOD)
     elseif Ptot(i) <= iconsumption(i) %if we don't have enough solar power
         if storage(i) >= iconsumption(i)*5/60 %if there is enough stored to meet full need
             storage(i) = storage(i-1) - iconsumption(i)*5/60; %demand is met by battery
-        elseif iconsumption(i)*5/60 > storage %not enough battery storage
-            cconsumption(i) = (iconsumption(i)*5/60-storage(i))-Ptot(i); %some energy is purchased
+        elseif iconsumption(i)*5/60 > storage+Ptot(i) %not enough battery storage
+            cconsumption(i) = (iconsumption(i)*5/60-storage(i)); %some energy is purchased
             storage(i) = 0; %all storage is depleted to decrease purchased amount
+        elseif iconsumption(i)*5/60 <storage(i) + Ptot(i)
+            cconsumption(i) = 0;
+            storage(i) = storage(i-1) + Ptot(i) - iconsumption(i)*5/60;
         end
     end
     
