@@ -54,8 +54,8 @@ end
 
 load('Case1_integralPower_year.mat');
 load('Case4_integralPower_year.mat');
-PEC = readtable('2018_PEC_data.csv');
-PEC = flip(PEC{:,3}*(0.00001));
+PEC = readtable('daily_noon.csv');
+PEC = flip(PEC{:,3}*(0.001)*24);
 
 figure
 hold on;
@@ -63,7 +63,7 @@ plot(daily_power(1,:),'b-');
 plot(daily_power(2,:),'r-');
 plot(integration,'g-');
 plot(integralP,'m-');
-%plot(PEC,'k--')
+plot(PEC,'k--')
 xlim([0 365]);
 ylabel('Power Produced (MWh)')
 xlabel('Day of year')
