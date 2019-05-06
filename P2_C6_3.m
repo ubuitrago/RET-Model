@@ -11,6 +11,7 @@ iconsumption = zeros(365,length(TOD)); %instantaneous consumption kW
 stored = zeros(365,length(TOD)); %kWh
 esold = zeros(365,length(TOD)); %energy sold
 capacity = batteries*210;
+x=5;
 for j=1:365
     N=j
     OCI = index_OCI(j);
@@ -22,7 +23,6 @@ for j=1:365
         panel_temp(j,i) = T_panel(time,N,I);
     end
 
-    x=4;
     if x==4
         for i=1:length(TOD)
             val1 = P2_C6(N,OCI,panel_temp(i),46);
@@ -191,7 +191,6 @@ for j=1:365
         panel_temp(j,i) = T_panel(time,N,I);
     end
 
-    x=4;
     if x==4
         for i=1:length(TOD)
             val1 = P2_C6(N,OCI,panel_temp(i),46);
@@ -360,7 +359,6 @@ for j=1:365
         panel_temp(j,i) = T_panel(time,N,I);
     end
 
-    x=4;
     if x==4
         for i=1:length(TOD)
             val1 = P2_C6(N,OCI,panel_temp(i),46);
@@ -523,9 +521,6 @@ sellprice = [0
     .5 
     1]*buyprice; %each row is a "sell price" case, each column is a "buy price" case
 
-totalbought1*buyprice-totalsold1*sellprice(1,:)
-totalbought1*buyprice-totalsold1*sellprice(2,:)
-totalbought1*buyprice-totalsold1*sellprice(3,:)
 %cases for 0,6, and 24 batteries and 0 buy back
 spent11 = totalbought1*buyprice - totalsold1*sellprice(1,:);
 spent21 = totalbought2*buyprice - totalsold2*sellprice(1,:);
@@ -552,39 +547,11 @@ plot(buyprice,spent23)
 plot(buyprice,spent31)
 plot(buyprice,spent32)
 plot(buyprice,spent33)
+ylabel('Average Electricity Spending ($/Year)')
+xlabel('Austin Electricity Cost ($/kWh)')
 grid on
-title('electricity spending for various cases')
-legend({'11','12','13','21','22','23','31','32','33'})
+title('Yearly Electricity Spending for Various Cases')
+legend({'No Batteries, 0% Buy Back','No Batteries, 50% Buy Back','No Batteries, 100% Buy Back','6 Batteries, 0% Buy Back','6 Batteries, 50% Buy Back','6 Batteries, 100% Buy Back','24 Batteries, 0% Buy Back','24 Batteries, 50% Buy Back','24 Batteries, 100% Buy Back'},'location','southoutside')
 hold off
 
-
-
-
-
-
-
-% actual_data = readtable('March 26, 2019 PEC data.csv'); 
-% pec_prod = flip(actual_data{:,3});
-% pec_consumption = flip(actual_data{:,2});
-% 
-% figure
-% hold on;
-% grid on;
-% xlabel('Time of Day');
-% ylabel('Power (Kw)');
-% plot(TOD,Ptot,'b-');
-% plot(TOD,cconsumption,'r-');
-% plot(TOD,storage,'g-');
-% plot(TOD,consum,'m-');
-% plot(TOD,pec_prod,'k-');
-% plot(TOD,pec_consumption,'k--');
-% grid off;
-% hold off;
-% title('Power Production vs Time of Day with storage (1X)')
-% legend('Power produced','Idealized Power Purchased','Energy stored in batteries'...
-%     ,'Idealized Power Consumed','PEC Production','PEC Consumption')
-% set(legend,'Location','southoutside','FontSize',12);
-
-
-    
     
