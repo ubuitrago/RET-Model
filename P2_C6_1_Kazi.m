@@ -4,8 +4,8 @@ clear all
 load('DailyOCI.mat');
 global totIr_OCI;
 global TOD;
-N = 85;
-OCI=0;
+N = 88;
+OCI=5;
 P2_C6(N,OCI,25,46);
 % power Ptot
 for i=1:length(TOD)
@@ -60,7 +60,7 @@ end
 load('winter_consumption.mat');
 %needs Ptot over the given day, needs to be told the day of the year, and
 %the number of batteries.
-Batteries = 0; %0,6, or 24
+Batteries = 6; %0,6, or 24
 cconsumption = zeros(1,length(TOD)); % cummulative consumption in kWh that had to be purchased from Austin Energy
 iconsumption = zeros(1,length(TOD)); %instantaneous consumption kW
 storage = zeros(1,length(TOD)); %kWh
@@ -85,7 +85,7 @@ for i = 1:length(TOD)
     % next we either store battery power, use battery power, or buy energy     
     if storage(i) == capacity && Ptot(i)>iconsumption(i)
         esold = esold + (Ptot(i)-iconsumption(i))*5/60; %if the batteries are full, excess energy is sold
-    elseif Ptot(i)>iconsumption(i) && storage <capacity %checks if there is excess power and battery room
+    elseif Ptot(i)>iconsumption(i) && storage(i) <capacity %checks if there is excess power and battery room
         if i >1
             storage(i) = storage(i-1) + (Ptot(i)-iconsumption(i))*5/60; %adds to storage. times 5/60 for the 5 minute step
             if storage(i) > capacity %if the step that was just executed excedes the capacity
@@ -100,20 +100,23 @@ for i = 1:length(TOD)
             end
         end
     elseif Ptot(i) <= iconsumption(i) %if we don't have enough solar power
-        if storage(i) >= iconsumption(i)*5/60 %if there is enough stored to meet full need
-            storage(i) = storage(i-1) - iconsumption(i)*5/60; %demand is met by battery
-        elseif iconsumption(i)*5/60 > storage %not enough battery storage
-            cconsumption(i) = (iconsumption(i)*5/60-storage(i))-Ptot(i); %some energy is purchased
+        if iconsumption(i)*5/60 > storage+Ptot(i)*5/60 %not enough battery storage
+            cconsumption(i) = (iconsumption(i)*5/60-storage(i)-Ptot(i)*5/60); %some energy is purchased
             storage(i) = 0; %all storage is depleted to decrease purchased amount
+        elseif iconsumption(i)*5/60 <storage(i) + Ptot(i)*5/60
+            cconsumption(i) = 0;
+            storage(i) = storage(i-1) + Ptot(i)*5/60 - iconsumption(i)*5/60;
         end
     end
     
 end
-
     
 
-
-actual_data = readtable('March 26, 2019 PEC data.csv'); 
+if N==85
+    actual_data = readtable('March 26, 2019 PEC data.csv'); 
+elseif N==88
+    actual_data = readtable('March 29, 2019 PEC data.csv'); 
+end
 pec_prod = flip(actual_data{:,3});
 pec_consumption = flip(actual_data{:,2});
 
@@ -121,18 +124,20 @@ figure
 hold on;
 grid on;
 xlabel('Time of Day');
-ylabel('Power (Kw)');
+ylabel('Power (KW)');
 plot(TOD,Ptot,'b-');
 plot(TOD,cconsumption,'r-');
-plot(TOD,storage,'g-');
 plot(TOD,consum,'m-');
 plot(TOD,pec_prod,'k-');
 plot(TOD,pec_consumption,'k--');
+yyaxis right
+plot(TOD,storage,'g-'); %Only one on the right bc its KWH
+ylabel ('Storage (KWh)');
 grid off;
 hold off;
-title('Power Production vs Time of Day with storage (1X)')
-legend('Power produced','Idealized Power Purchased','Energy stored in batteries'...
-    ,'Idealized Power Consumed','PEC Production','PEC Consumption')
+title('Power Production vs Time of Day with storage (6X)')
+legend('Power produced','Idealized Power Purchased'...
+    ,'Idealized Power Consumed','PEC Production','PEC Consumption','Energy stored in batteries')
 set(legend,'Location','southoutside','FontSize',12);
 
 
