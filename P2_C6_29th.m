@@ -51,7 +51,7 @@ plot(TOD,generated,'b-');
 plot(TOD,purchased,'r-');
 yyaxis right;
 ylabel('Storage (Kwh)')
-plot(TOD,stored,'g-');
+plot(TOD,stored,'g--');
 yyaxis left;
 plot(TOD,consum,'m-');
 plot(TOD,pec_prod,'k-');

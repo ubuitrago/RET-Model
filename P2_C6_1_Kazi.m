@@ -135,7 +135,19 @@ plot(TOD,storage,'g-'); %Only one on the right bc its KWH
 ylabel ('Storage (KWh)');
 grid off;
 hold off;
-title('Power Production vs Time of Day with storage (6X)')
+
+if x==1
+    title('Power Production vs Time of Day with storage (1X)');
+    end
+
+elseif x==4
+    title('Power Production vs Time of Day with storage (4X)');
+    end
+
+elseif x == 6
+    title('Power Production vs Time of Day with storage (6X)');
+    end
+
 legend('Power produced','Idealized Power Purchased'...
     ,'Idealized Power Consumed','PEC Production','PEC Consumption','Energy stored in batteries')
 set(legend,'Location','southoutside','FontSize',12);

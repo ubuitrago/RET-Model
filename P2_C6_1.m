@@ -103,19 +103,21 @@ hold on;
 grid on;
 xlabel('Time of Day');
 ylabel('Power (Kw)');
+yyaxis left
 plot(TOD,generated,'b-');
-plot(TOD,cconsumption,'r-');
+plot(TOD,purchased,'r-');
 yyaxis right
-plot(TOD,storage,'g-'); %Only one on the right bc its KWH
+plot(TOD,storage,'g--'); %Only one on the right bc its KWH
 ylabel ('Storage (KWh)');
+yyaxis left
 plot(TOD,consum,'m-');
 plot(TOD,pec_prod,'k-');
 plot(TOD,pec_consumption,'k--');
 grid off;
 hold off;
 title('Power Production vs Time of Day with storage (1X)')
-legend('Power produced','Idealized Power Purchased','Energy stored in batteries'...
-    ,'Idealized Power Consumed','PEC Production','PEC Consumption')
+legend('Power produced','Idealized Power Purchased',...
+    'Idealized Power Consumed','PEC Production','PEC Consumption','Energy stored in batteries');
 set(legend,'Location','southoutside','FontSize',12);
 
 
